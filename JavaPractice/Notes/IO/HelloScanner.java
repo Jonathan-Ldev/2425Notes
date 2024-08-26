@@ -10,5 +10,16 @@ public class HelloScanner {
         String food = ui.nextLine();    //get the next line of input from the user
 
         System.out.println("Wow! "+food+" sounds Delish!" );
+
+        System.out.println("How much was it?");
+        String cost = ui.nextLine();
+        System.out.println("Wow! "+cost+" seems pretty cheap");
+
+        System.out.println("How many "+food+" did you get?");
+        String amount = ui.nextLine();
+        System.out.println("Wow! "+amount+" seems like a lot!?");
+
+ui.close();
+
     }
 }
