@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Random;
 public class SciFi {
     public static void main(String[] args){
         Scanner ui = new Scanner(System.in);
@@ -21,28 +20,17 @@ public class SciFi {
     ui.close();
 
 
-    Random randy = new Random();
-
-    int Lof = first.length();
-    int num = randy.nextInt(0,Lof);
-    String SciFiFirst = first.substring(num,Lof);
+    String SciFiFirst = first.substring(0,2);
     int Loc = last.length();
-    num = randy.nextInt(0,Loc);
-    String SciFiLast = last.substring(num,Loc);
+    String SciFiLast = last.substring(Loc-2);
     String SciFiFirstName = SciFiFirst+SciFiLast;
-    int Lof2 = city.length();
-    num = randy.nextInt(0,Lof2);
-    String SciLastFirst = city.substring(num,Lof2);
+    String SciLastFirst = city.substring(0,4);
     int Loc2 = school.length();
-    num = randy.nextInt(0,Loc2);
-    String SciLastLast = school.substring(num,Loc2);
+    String SciLastLast = school.substring(Loc2-3);
     String SciFiLastName = SciLastFirst+SciLastLast;
-    int Lof3 = pet.length();
-    num = randy.nextInt(0,Lof3);
-    String SciOriginFirst = pet.substring(num,Lof3);
+    String SciOriginFirst = pet.substring(0,3);
     int Loc3 = sibling.length();
-    num = randy.nextInt(0,Loc3);
-    String SciOriginLast = sibling.substring(num,Loc3);
+    String SciOriginLast = sibling.substring(Loc3-2);
     String SciFiOrigin = SciOriginFirst+SciOriginLast;
     System.out.println("Sci-Fi First Name: "+SciFiFirstName+"");
     System.out.println("Sci-Fi Last Name: "+SciFiLastName+"");
@@ -54,4 +42,9 @@ public class SciFi {
 
 }
 
-      
+      /*
+         rev 2
+            SciFiFirstName = first two let of First and last two let of Lasgt
+            SciFiLastName = first 4 let of city and last 3 let of school
+            SciFiOrigin = first 3 let of pet and last 2 let of sib
+         */
