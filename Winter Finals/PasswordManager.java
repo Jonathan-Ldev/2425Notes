@@ -2,24 +2,39 @@ import java.io.*;
 import java.util.*;
 
 public class PasswordManager {
-    private static Map<String, List<Account>> categories = new HashMap<>();
+    private static Map<String, List<User.Account>> categories = new HashMap<>();
+    private static ArrayList<String> users = new ArrayList<>();
+    private static ArrayList<String> passwords = new ArrayList<>();
     private static final String FILENAME = "password_manager.txt";
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
         loadFromFile();
+        String currentUser;
+
+        if (users.isEmpty()){
+            System.out.println("Please create an Account to get started");
+            String username = scanner.next();
+            new User(username);
+            users.add(username);
+            System.out.println("Enter an Account Password");
+            String password = scanner.next();
+            passwords.add(password);
+            currentUser = username;
+        }
+
+
 
         boolean running = true;
         while (running) {
             System.out.println("Password Manager Menu:");
             System.out.println("1. Add User");
             System.out.println("2. Add Account");
-            System.out.println("3. Add Account to Existing Category");
-            System.out.println("4. Delete Account");
-            System.out.println("5. View Categories");
-            System.out.println("6. Modify Account");
-            System.out.println("7. Generate Password");
-            System.out.println("8. Exit");
+            System.out.println("3. Delete Account");
+            System.out.println("4. View Categories");
+            System.out.println("5. Modify Account");
+            System.out.println("6. Generate Password");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -32,21 +47,18 @@ public class PasswordManager {
                     addAccount();
                     break;
                 case 3:
-                    addAccountToCategory();
-                    break;
-                case 4:
                     deleteAccount();
                     break;
-                case 5:
+                case 4:
                     viewCategories();
                     break;
-                case 6:
+                case 5:
                     modifyAccount();
                     break;
-                case 7:
+                case 6:
                     System.out.println("Generated Password: " + generatePassword());
                     break;
-                case 8:
+                case 7:
                     running = false;
                     saveToFile();
                     break;
@@ -59,79 +71,128 @@ public class PasswordManager {
     public static void addUser() {
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
+        new User(username);
+        users.add(username);
+        System.out.println("Enter an Account Password");
+        String password = scanner.next();
+        passwords.add(password);
         System.out.println("User " + username + " added.");
     }
 
     public static void addAccount() {
-        System.out.print("Enter category name: ");
-        String category = scanner.nextLine();
 
-        System.out.print("Enter account name: ");
+        System.out.print("Enter which account this is for: ");
+        System.out.println(users);
         String accountName = scanner.nextLine();
 
+        if (!users.contains(accountName)){
+            System.out.println("Error Try again");
+            return;
+        }
+        System.out.println("Enter Password please");
+        String accPassword = scanner.next();
+        if(!accPassword.equals(passwords.get(users.indexOf(accountName)))){
+            System.out.println("Wrong Password");
+            return;
+        }
+
+        System.out.print("Enter category name: ");
+        String category = scanner.next();
+
+       
         System.out.print("Enter username: ");
-        String username = scanner.nextLine();
+        String username = scanner.next();
 
         System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+        String password = scanner.next();
 
-        Account account = new Account(accountName, username, password);
+        User.Account account = new User.Account(accountName, username, password);
         categories.putIfAbsent(category, new ArrayList<>());
         categories.get(category).add(account);
         System.out.println("Account added to category " + category);
     }
 
-    public static void addAccountToCategory() {
-        System.out.print("Enter existing category name: ");
-        String category = scanner.nextLine();
-
-        if (!categories.containsKey(category)) {
-            System.out.println("Category does not exist.");
-            return;
-        }
-
-        System.out.print("Enter account name: ");
-        String accountName = scanner.nextLine();
-
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-
-        Account account = new Account(accountName, username, password);
-        categories.get(category).add(account);
-        System.out.println("Account added to category " + category);
-    }
 
     public static void deleteAccount() {
+        String temp = "";
+
+        System.out.println("Enter which user this is for");
+        System.out.println(users);
+        String user = scanner.next();
+
+        if (!users.contains(user)){
+            System.out.println("Error Try again");
+            return;
+        }
+
+        System.out.println("Enter Password please");
+        String accPassword = scanner.next();
+        if(!accPassword.equals(passwords.get(users.indexOf(user)))){
+            System.out.println("Wrong Password");
+            return;
+        }
+        
+        
         System.out.print("Enter category name: ");
-        String category = scanner.nextLine();
+        String category = scanner.next();
 
         if (!categories.containsKey(category)) {
             System.out.println("Category does not exist.");
             return;
         }
 
-        System.out.print("Enter account name to delete: ");
-        String accountName = scanner.nextLine();
+        for (String single : categories.keySet()) {
+            for (User.Account account : categories.get(category)) {
+                if (account.toString().contains(user))
+                System.out.println(account);
+                temp +=account;
+            }
+        }
+        
 
-        List<Account> accounts = categories.get(category);
+        System.out.print("Enter account name to delete: ");
+        String accountName = scanner.next();
+        
+        if (temp.contains(accountName)){
+            List<User.Account> accounts = categories.get(category);
         accounts.removeIf(account -> account.getName().equals(accountName));
         System.out.println("Account " + accountName + " deleted.");
+        }
+        else{
+            System.out.println("Problem Deleting Account");
+        }
+        
     }
 
     public static void viewCategories() {
         System.out.println("Categories:");
         for (String category : categories.keySet()) {
             System.out.println("- " + category);
-            for (Account account : categories.get(category)) {
+            for (User.Account account : categories.get(category)) {
                 System.out.println("   " + account);
             }
         }
+        
     }
 
     public static void modifyAccount() {
+        String temp = "";
+
+        System.out.println("Enter which user this is for");
+        System.out.println(users);
+        String user = scanner.next();
+
+        if (!users.contains(user)){
+            System.out.println("Error Try again");
+            return;
+        }
+
+        System.out.println("Enter Password please");
+        String accPassword = scanner.next();
+        if(!accPassword.equals(passwords.get(users.indexOf(user)))){
+            System.out.println("Wrong Password");
+            return;
+        }
         System.out.print("Enter category name: ");
         String category = scanner.nextLine();
 
@@ -140,20 +201,30 @@ public class PasswordManager {
             return;
         }
 
+        for (String single : categories.keySet()) {
+            for (User.Account account : categories.get(category)) {
+                if (account.toString().contains(user))
+                System.out.println(account);
+                temp +=account;
+            }
+        }
+
         System.out.print("Enter account name to modify: ");
         String accountName = scanner.nextLine();
 
-        List<Account> accounts = categories.get(category);
-        for (Account account : accounts) {
-            if (account.getName().equals(accountName)) {
-                System.out.print("Enter new username: ");
-                String newUsername = scanner.nextLine();
-                System.out.print("Enter new password: ");
-                String newPassword = scanner.nextLine();
-                account.setUsername(newUsername);
-                account.setPassword(newPassword);
-                System.out.println("Account modified.");
-                return;
+        if (temp.contains(accountName)){
+            List<User.Account> accounts = categories.get(category);
+            for (User.Account account : accounts) {
+                if (account.getName().equals(accountName)) {
+                    System.out.print("Enter new username: ");
+                    String newUsername = scanner.nextLine();
+                    System.out.print("Enter new password: ");
+                    String newPassword = scanner.nextLine();
+                    account.setUsername(newUsername);
+                    account.setPassword(newPassword);
+                    System.out.println("Account modified.");
+                    return;
+                }
             }
         }
         System.out.println("Account not found.");
@@ -173,7 +244,7 @@ public class PasswordManager {
         BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME));
         for (String category : categories.keySet()) {
             writer.write("Category: " + category + "\n");
-            for (Account account : categories.get(category)) {
+            for (User.Account account : categories.get(category)) {
                 writer.write(account.toString() + "\n");
             }
         }
@@ -193,7 +264,7 @@ public class PasswordManager {
                 categories.putIfAbsent(currentCategory, new ArrayList<>());
             } else {
                 String[] parts = line.split(", ");
-                Account account = new Account(parts[0], parts[1], parts[2]);
+                User.Account account = new User.Account(parts[0], parts[1], parts[2]);
                 categories.get(currentCategory).add(account);
             }
         }
@@ -201,32 +272,48 @@ public class PasswordManager {
     }
 
     // Account class to represent each account
-    static class Account {
-        private String name;
+    static class User{
         private String username;
-        private String password;
-
-        public Account(String name, String username, String password) {
-            this.name = name;
+        public User(String username){
             this.username = username;
-            this.password = password;
         }
 
-        public String getName() {
-            return name;
+        public String getUsername() {
+            return username;
         }
 
         public void setUsername(String username) {
             this.username = username;
         }
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        @Override
-        public String toString() {
-            return name + ", " + username + ", " + password;
+        static class Account {
+            private String name;
+            private String username;
+            private String password;
+    
+            public Account(String name, String username, String password) {
+                this.name = name;
+                this.username = username;
+                this.password = password;
+            }
+    
+            public String getName() {
+                return name;
+            }
+    
+            public void setUsername(String username) {
+                this.username = username;
+            }
+    
+            public void setPassword(String password) {
+                this.password = password;
+            }
+    
+            @Override
+            public String toString() {
+                return name + ", " + username + ", " + password;
+            }
         }
     }
+    
 }
