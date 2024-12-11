@@ -27,8 +27,10 @@ public class GalleryFragment extends Fragment {
     private TextView answerTXT;
     private Button enterBTN;
     private TextView scoreTXT;
+    private TextView attemptTXT;
 
     int strike = 0;
+    int score = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class GalleryFragment extends Fragment {
         guessTXT = (EditText) view.findViewById(R.id.guessTXT);
         answerTXT = (TextView) view.findViewById(R.id.answerTXT);
         enterBTN = view.findViewById(R.id.enterBTN);
+        scoreTXT = (TextView) view.findViewById(R.id.scoreTXT);
+        attemptTXT = (TextView) view.findViewById(R.id.attemptTXT);
 
 
         int randy = new Random().nextInt(100);
@@ -62,23 +66,28 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 answerTXT.setVisibility(View.VISIBLE);
-                while (strike < 10){
+                if (strike < 10){
                     if(Integer.parseInt(String.valueOf(guessTXT.getText())) == randy){
                         answerTXT.setText("You Got it Right");
-                        break;
+                        score += 50+(5*(10-strike));
+                        scoreTXT.setText(""+score);
                     }
                     if (Integer.parseInt(String.valueOf(guessTXT.getText())) < randy){
                         answerTXT.setText("Too Low");
                         strike +=1;
+                        int num = 10-strike;
+                        attemptTXT.setText("Strikes Left: "+num);
                     }
                     if (Integer.parseInt(String.valueOf(guessTXT.getText())) > randy){
                         answerTXT.setText("Too High");
                         strike +=1;
+                        int num = 10-strike;
+                        attemptTXT.setText("Strikes Left: "+num);
                     }
                 }
 
-                if (strike < 10){
-                    
+                if (strike >= 10){
+                    answerTXT.setText("You are out of strikes, You Lost");
                 }
 
 

@@ -6,6 +6,10 @@
     app:startDestination="@+id/nav_home">
 
     <fragment
+        android:id="@+id/nav_scifi"
+        android:name="com.example.navshowcase.ui.scifi.SciFiFragment"
+        android:label="SciFi Name Generator" />
+    <fragment
         android:id="@+id/nav_home"
         android:name="com.example.navshowcase.ui.home.HomeFragment"
         android:label="Portfolio"
@@ -20,6 +24,6 @@
     <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.example.navshowcase.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="MadLibs"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

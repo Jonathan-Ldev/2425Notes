@@ -6,6 +6,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:icon="@drawable/ic_menu_camera"
             android:title="Portfolio" />
         <item
@@ -14,7 +16,11 @@
             android:title="Guess a Number" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="MadLibs" />
+        <item
+            android:id="@+id/nav_scifi"
+            android:icon="@android:drawable/btn_star"
+            android:title="SciFi Name Generator" />
     </group>
 </menu>
