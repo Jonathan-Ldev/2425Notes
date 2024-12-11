@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2F2E2E"
     tools:context=".ui.slideshow.SlideshowFragment">
 
     <TextView
@@ -15,6 +16,175 @@
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="28dp"
+        android:text="Welcome to MadLib! Choose your 8 Words!"
+        android:textAlignment="center"
+        android:textColor="#F4EEEE"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/adjective1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/adjective1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="143dp"
+        android:ems="10"
+        android:hint="input Adjective 1"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/adjective2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="input Adjective 2"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adjective1" />
+
+    <EditText
+        android:id="@+id/adjective3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="input Adjective 3"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adjective2" />
+
+    <EditText
+        android:id="@+id/noun1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="input Noun 1"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adjective3" />
+
+    <EditText
+        android:id="@+id/noun2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="input Noun 2"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noun1" />
+
+    <EditText
+        android:id="@+id/verb1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="19dp"
+        android:ems="10"
+        android:hint="input Verb 1"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noun2" />
+
+    <EditText
+        android:id="@+id/verb2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="input Verb 2"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verb1" />
+
+    <EditText
+        android:id="@+id/verb3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="input Verb 3"
+        android:inputType="text"
+        android:textColor="#F4EEEE"
+        android:textColorHint="#F4EEEE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verb2" />
+
+    <Button
+        android:id="@+id/madlib1BTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Madlib 1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/madlib2BTN"
+        app:layout_constraintEnd_toStartOf="@+id/madlib2BTN"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/madlib2BTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="Madlib 2"
+        app:layout_constraintEnd_toStartOf="@+id/madlib3BTN"
+        app:layout_constraintStart_toEndOf="@+id/madlib1BTN"
+        app:layout_constraintTop_toBottomOf="@+id/verb3" />
+
+    <Button
+        android:id="@+id/madlib3BTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:text="Madlib3"
+        app:layout_constraintBaseline_toBaselineOf="@+id/madlib2BTN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/madlib2BTN" />
+
+    <TextView
+        android:id="@+id/storyTXT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#F4EEEE"
+        android:textSize="18sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
