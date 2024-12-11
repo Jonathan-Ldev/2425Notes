@@ -141,15 +141,15 @@ public class PasswordManager {
             return;
         }
 
+
         for (String single : categories.keySet()) {
-            for (User.Account account : categories.get(category)) {
+            for (User.Account account : categories.get(single)) {
                 if (account.toString().contains(user))
                 System.out.println(account);
                 temp +=account;
             }
         }
         
-
         System.out.print("Enter account name to delete: ");
         String accountName = scanner.next();
         
@@ -165,14 +165,32 @@ public class PasswordManager {
     }
 
     public static void viewCategories() {
-        System.out.println("Categories:");
+
+        System.out.println("Enter which user this is for");
+        System.out.println(users);
+        String user = scanner.next();
+
+        if (!users.contains(user)){
+            System.out.println("Error Try again");
+            return;
+        }
+
+        System.out.println("Enter Password please");
+        String accPassword = scanner.next();
+        if(!accPassword.equals(passwords.get(users.indexOf(user)))){
+            System.out.println("Wrong Password");
+            return;
+        }
+        
         for (String category : categories.keySet()) {
             System.out.println("- " + category);
             for (User.Account account : categories.get(category)) {
-                System.out.println("   " + account);
+                if (account.toString().contains(user))
+                System.out.println(account);
             }
         }
-        
+
+       
     }
 
     public static void modifyAccount() {
@@ -194,7 +212,7 @@ public class PasswordManager {
             return;
         }
         System.out.print("Enter category name: ");
-        String category = scanner.nextLine();
+        String category = scanner.next();
 
         if (!categories.containsKey(category)) {
             System.out.println("Category does not exist.");
@@ -210,16 +228,16 @@ public class PasswordManager {
         }
 
         System.out.print("Enter account name to modify: ");
-        String accountName = scanner.nextLine();
+        String accountName = scanner.next();
 
         if (temp.contains(accountName)){
             List<User.Account> accounts = categories.get(category);
             for (User.Account account : accounts) {
                 if (account.getName().equals(accountName)) {
                     System.out.print("Enter new username: ");
-                    String newUsername = scanner.nextLine();
+                    String newUsername = scanner.next();
                     System.out.print("Enter new password: ");
-                    String newPassword = scanner.nextLine();
+                    String newPassword = scanner.next();
                     account.setUsername(newUsername);
                     account.setPassword(newPassword);
                     System.out.println("Account modified.");
@@ -242,12 +260,18 @@ public class PasswordManager {
 
     public static void saveToFile() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME));
+        int i = 0;
         for (String category : categories.keySet()) {
             writer.write("Category: " + category + "\n");
             for (User.Account account : categories.get(category)) {
                 writer.write(account.toString() + "\n");
             }
         }
+        for (String username:users){
+            writer.write("User: "+username+", "+passwords.get(i)+"\n");
+            i++;
+        }
+
         writer.close();
     }
 
@@ -262,12 +286,21 @@ public class PasswordManager {
             if (line.startsWith("Category: ")) {
                 currentCategory = line.substring(10);
                 categories.putIfAbsent(currentCategory, new ArrayList<>());
-            } else {
+            } 
+            
+            else if(line.startsWith("User: ")){
+                String[] parts = line.split(",");
+                users.add(parts[0].replace("User: ", ""));
+                passwords.add(parts[1].strip());
+            }
+            
+            else {
                 String[] parts = line.split(", ");
                 User.Account account = new User.Account(parts[0], parts[1], parts[2]);
                 categories.get(currentCategory).add(account);
             }
         }
+        System.out.println("Current Users: "+users);
         reader.close();
     }
 
