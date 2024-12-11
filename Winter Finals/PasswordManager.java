@@ -254,8 +254,8 @@ public class PasswordManager {
 
         for (String single : categories.keySet()) {
             for (User.Account account : categories.get(category)) {
-                if (account.toString().contains(user))
-                System.out.println(single);
+                if (account.toString().contains(user) && single.toString().contains(category))
+                System.out.println(account);
                 temp +=account;
             }
         }
