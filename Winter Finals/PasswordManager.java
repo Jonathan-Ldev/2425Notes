@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PasswordManager {
     private static Map<String, List<User.Account>> categories = new HashMap<>();
@@ -17,8 +19,18 @@ public class PasswordManager {
             String username = scanner.next();
             new User(username);
             users.add(username);
-            System.out.println("Enter an Account Password");
+            System.out.println("Enter an Account Password, Password must have 8 characters, a special character, and a number");
             String password = scanner.next();
+            while(true){
+                if (Password_Validation(password) == true){
+                    break;
+                }
+                else{
+                    System.out.println("Please include 8 characters, a special character, and a number");
+                    password = scanner.next();
+                }
+                
+            }
             passwords.add(password);
             currentUser = username;
         }
@@ -75,6 +87,16 @@ public class PasswordManager {
         users.add(username);
         System.out.println("Enter an Account Password");
         String password = scanner.next();
+        while(true){
+            if (Password_Validation(password) == true){
+                break;
+            }
+            else{
+                System.out.println("Please include 8 characters, a special character, and a number");
+                password = scanner.next();
+            }
+            
+        }
         passwords.add(password);
         System.out.println("User " + username + " added.");
     }
@@ -91,6 +113,16 @@ public class PasswordManager {
         }
         System.out.println("Enter Password please");
         String accPassword = scanner.next();
+        while(true){
+            if (Password_Validation(accPassword) == true){
+                break;
+            }
+            else{
+                System.out.println("Please include 8 characters, a special character, and a number");
+                accPassword = scanner.next();
+            }
+            
+        }
         if(!accPassword.equals(passwords.get(users.indexOf(accountName)))){
             System.out.println("Wrong Password");
             return;
@@ -144,18 +176,19 @@ public class PasswordManager {
 
         for (String single : categories.keySet()) {
             for (User.Account account : categories.get(single)) {
-                if (account.toString().contains(user))
+                if (account.toString().contains(user) && single.toString().contains(category))
                 System.out.println(account);
                 temp +=account;
             }
         }
+
         
         System.out.print("Enter account name to delete: ");
         String accountName = scanner.next();
         
         if (temp.contains(accountName)){
             List<User.Account> accounts = categories.get(category);
-        accounts.removeIf(account -> account.getName().equals(accountName));
+        accounts.removeIf(account -> account.getUsername().equals(accountName));
         System.out.println("Account " + accountName + " deleted.");
         }
         else{
@@ -222,7 +255,7 @@ public class PasswordManager {
         for (String single : categories.keySet()) {
             for (User.Account account : categories.get(category)) {
                 if (account.toString().contains(user))
-                System.out.println(account);
+                System.out.println(single);
                 temp +=account;
             }
         }
@@ -238,6 +271,16 @@ public class PasswordManager {
                     String newUsername = scanner.next();
                     System.out.print("Enter new password: ");
                     String newPassword = scanner.next();
+                    while(true){
+                        if (Password_Validation(newPassword) == true){
+                            break;
+                        }
+                        else{
+                            System.out.println("Please include 8 characters, a special character, and a number");
+                            newPassword = scanner.next();
+                        }
+                        
+                    }
                     account.setUsername(newUsername);
                     account.setPassword(newPassword);
                     System.out.println("Account modified.");
@@ -304,6 +347,30 @@ public class PasswordManager {
         reader.close();
     }
 
+    public static boolean Password_Validation(String password) 
+{
+    // Where I got the code to check the password
+    // https://stackoverflow.com/questions/1795402/check-if-a-string-contains-a-special-character
+    if(password.length()>=8)
+    {
+        Pattern letter = Pattern.compile("[a-zA-z]");
+        Pattern digit = Pattern.compile("[0-9]");
+        Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        //Pattern eight = Pattern.compile (".{8}");
+
+
+           Matcher hasLetter = letter.matcher(password);
+           Matcher hasDigit = digit.matcher(password);
+           Matcher hasSpecial = special.matcher(password);
+
+           return hasLetter.find() && hasDigit.find() && hasSpecial.find();
+
+    }
+    else
+        return false;
+
+}
+
     // Account class to represent each account
     static class User{
         private String username;
@@ -332,6 +399,10 @@ public class PasswordManager {
     
             public String getName() {
                 return name;
+            }
+
+            public String getUsername(){
+                return username;
             }
     
             public void setUsername(String username) {
