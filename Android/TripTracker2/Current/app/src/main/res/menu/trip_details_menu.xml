@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        app:showAsAction="ifRoom|withText"
+        android:title="home">
+    </item>
+
+    <item
+        android:id="@+id/action_post"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom|withText"
+        android:title="post">
+    </item>
+
+    <item
+        android:id="@+id/action_delete"
+        app:showAsAction="ifRoom|withText"
+        android:title="delete"
+        android:icon="@android:drawable/ic_menu_delete">
+    </item>
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="logout">
+    </item>
+
+    <item android:id="@+id/action_settings"
+        android:title="settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+</menu>

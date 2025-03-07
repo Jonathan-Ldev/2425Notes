@@ -70,7 +70,7 @@ public class GalleryFragment extends Fragment {
                     if(Integer.parseInt(String.valueOf(guessTXT.getText())) == randy){
                         answerTXT.setText("You Got it Right");
                         score += 50+(5*(10-strike));
-                        scoreTXT.setText(""+score);
+                        scoreTXT.setText("Score: "+score);
                     }
                     if (Integer.parseInt(String.valueOf(guessTXT.getText())) < randy){
                         answerTXT.setText("Too Low");

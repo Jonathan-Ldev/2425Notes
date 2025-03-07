@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:title="filter name"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always" >
+    </item>
+    <item
+        android:id="@+id/action_refresh"
+        app:showAsAction="ifRoom|withText"
+        android:title="refresh">
+    </item>
+
+    <item
+        android:id="@+id/action_new"
+        app:showAsAction="ifRoom|withText"
+        android:title="new"
+        android:icon="@android:drawable/ic_menu_add">
+    </item>
+
+    <item
+        android:id="@+id/action_public_trips"
+        android:title="public trips">
+    </item>
+
+    <item
+        android:id="@+id/action_my_trips"
+        android:title="private trips">
+    </item>
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="logout">
+    </item>
+
+    <item android:id="@+id/action_settings" android:title="settings"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+</menu>

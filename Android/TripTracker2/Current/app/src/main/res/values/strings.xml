@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TripTracker</string>
+    <string name="action_home">home</string>
+    <string name="action_post">post</string>
+    <string name="action_home1">home</string>
+    <string name="action_delete">delete</string>
+    <string name="action_logout">logout</string>
+    <string name="action_settings">settings</string>
+    <string name="filter_name">filter</string>
+    <string name="action_refresh">refresh</string>
+    <string name="action_new">new</string>
+    <string name="action_public_trips">public</string>
+    <string name="action_my_trips">private</string>
+</resources>
