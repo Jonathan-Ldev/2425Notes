@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,14 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
-    public static ArrayList<Trip> listOfTrips = new ArrayList<>(Arrays.asList(
-            new Trip("Trip 1","test1"),
-            new Trip("Trip 2","test2"),
-            new Trip("Trip 3","test3")));
+    public static ArrayList<Trip> listOfTrips = new ArrayList<>();
+
+    CRUDManager crud = new CRUDManager();
+
     public TripAdapter(Context applicationContext) {
 
+        crud.getAllTrips(new CRUDManager.TripListCallback() {
+            @Override
+            public void onTripsLoaded(List<Trip> trips) {
+                updateTrips(trips);
+            }
+
+            @Override
+            public void onTripsLoadError(String errorMessage) {
+                Log.e("TripAdapter", "Error loading trips:" + errorMessage);
+            }
+        });
     }
     public class TripViewHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout containerView;
@@ -40,7 +53,37 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                     Intent i = new Intent(view.getContext(), TripDetailsActivity.class);
                     i.putExtra("name",current.getTripName());
                     i.putExtra("description",current.getTripDescription());
+                    i.putExtra("startDate",current.getStartDate());
+                    i.putExtra("endDate",current.getEndDate());
+                    i.putExtra("isPublic",current.isPublic());
+                    i.putExtra("tripId",current.getTripId());
+                    i.putExtra("userId",current.getUserId());
                     view.getContext().startActivity(i);
+                }
+            });
+
+            containerView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Trip current = (Trip) containerView.getTag();
+                    crud.deleteTrip(current, new CRUDManager.CrudCallBack() {
+                        @Override
+                        public void onComplete(boolean success, String errorMessage) {
+                            if (success){
+                                Toast.makeText(v.getContext(), "Trip Deleted", Toast.LENGTH_SHORT).show();
+                                //Remove the item from the list and notify the adapter
+                                int position = getAdapterPosition();
+                                if(position != RecyclerView.NO_POSITION){
+                                    listOfTrips.remove(position);
+                                    notifyItemRemoved(position);
+                                }
+                            }
+                            else{
+                                Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    return true;
                 }
             });
 
@@ -66,5 +109,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public int getItemCount() {
         return listOfTrips.size();
+    }
+
+    private void updateTrips(List<Trip> trips){
+        listOfTrips.clear();
+        listOfTrips.addAll(trips);
+        notifyDataSetChanged();
     }
 }

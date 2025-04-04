@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class StreamActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class StreamActivity extends AppCompatActivity {
     private static TripAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private boolean mPublicView;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class StreamActivity extends AppCompatActivity {
             return true;
         } else if (itemId == R.id.action_logout) {
             Log.d("StreamActivity", "log out button");
+            logout();
             return true;
         } else if (itemId == R.id.action_settings) {
             Log.d("StreamActivity", "settings button");
@@ -114,22 +117,15 @@ public class StreamActivity extends AppCompatActivity {
         return true;   //true or the menu won't show
     }
     private void refreshStream(){
-            //pull data from intent that came from add trip
-            //add to list of trips
-            String name = getIntent().getStringExtra("name");
-            String desc = getIntent().getStringExtra("description");
-            Log.d("StreamActivity",name);
-            listOfTrips.add(new Trip(name,desc));
             adapter.notifyDataSetChanged();
-//            recyclerView = findViewById(R.id.recycler_view);
-//            adapter = new TripAdapter(getApplicationContext());
-//            layoutManager = new LinearLayoutManager(this);
-//            recyclerView.setAdapter(adapter);
-//            recyclerView.setLayoutManager(layoutManager);
-//            adapter.notifyDataSetChanged();
         }
-    public static void refreshPage(){
-        adapter.notifyDataSetChanged();
+    private void logout(){
+        auth.signOut();
+        getSharedPreferences("user_data", MODE_PRIVATE).edit().clear().apply();
+        Intent i = new Intent(this, LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 }
 

@@ -32,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
+        authManager = new AuthManager();
+
         //Linking the widgets to java objects
         emailET = findViewById(R.id.enter_email);
         passwordET = findViewById(R.id.enter_password);
@@ -58,18 +60,23 @@ public class LoginActivity extends AppCompatActivity {
                 un.contains("\\") ||
                 un.contains("/*") ||
                 un.contains("*/")) {
-//                Toast.makeText(this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                Snackbar.make(v, "Invalid Credentials", Snackbar.LENGTH_SHORT).show();
 
-            } else if (un.equals(masterUsername) && pw.equals(masterPassword)) {
-                //send the username to the StreamActivity to display
-                startActivity(new Intent(this, StreamActivity.class));
+            } else {
+                login(un,pw);
             }
-            Snackbar.make(v, "Invalid Credentials", Snackbar.LENGTH_SHORT).show();
         });
         switchViewTXT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchView(v);
+            }
+        });
+
+        registerBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerUser(v);
             }
         });
 
@@ -91,11 +98,35 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void registerUser(View view){
+    public void registerUser(View view){
         String un = emailET.getText().toString();
         String pw = passwordET.getText().toString();
         String name = nameET.getText().toString();
-        authManager
+        authManager.signUpWithEmailAndPassword(un, pw, new AuthManager.AuthCallback(){
+            @Override
+            public void onComplete(boolean success, String errorMessage){
+                if(success){
+                    startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                }
+                else{
+                    Snackbar.make(view, errorMessage, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void login(String email, String password){
+        authManager.signInWithEmailAndPassword(email, password, new AuthManager.AuthCallback() {
+            @Override
+            public void onComplete(boolean success, String errorMessage) {
+                if(success){
+                    startActivity(new Intent(LoginActivity.this, StreamActivity.class));
+                }
+                else{
+                    Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
